@@ -60,7 +60,8 @@ echo $ANTIGEN_HS_RC
 } || {
 	echo "antigen-hs not installed, cloning now"
 	git clone https://github.com/Tarrasch/antigen-hs.git ~/.zsh/antigen-hs
-i	echo "Compiling file"
+	echo "Compiling file"
+	source $ANTIGEN_HS_RC
 	antigen-hs-compile
 	source $ANTIGEN_HS_RC
 }
