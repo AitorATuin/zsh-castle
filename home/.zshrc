@@ -1,0 +1,1 @@
+/Users/atuin/.homesick/repos/zsh-castle/home/.zshrc
