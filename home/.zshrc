@@ -1,3 +1,12 @@
+# Locale
+export LANG=es_ES.utf8
+export LC_ALL=es_ES.utf8
+
+export PATH=$PATH:$HOME/bin
+export MANPATH=$MANPATH:$HOME/man
+
+export EDITOR=vim
+
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
 HISTSIZE=1000
@@ -5,6 +14,8 @@ SAVEHIST=1000
 setopt appendhistory autocd extendedglob nomatch notify prompt_subst
 unsetopt beep
 bindkey -v
+bindkey -M vicmd '?' history-incremental-search-backward
+
 # End of lines configured by zsh-newuser-install
 
 function detect-os() {
