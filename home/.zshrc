@@ -1,4 +1,7 @@
 # Locale
+export LANG=es_ES.utf8
+export LC_ALL=es_ES.utf8
+>>>>>>> 01065e9... Added locale
 
 export PATH=$PATH:$HOME/bin
 export MANPATH=$MANPATH:$HOME/man
@@ -14,6 +17,9 @@ unsetopt beep
 bindkey -v
 bindkey -M vicmd '?' history-incremental-search-backward
 
+# End of lines configured by zsh-newuser-install
+# The following lines were added by compinstall
+zstyle :compinstall filename '/Users/atuin/.zshrc'
 # End of lines configured by zsh-newuser-install
 
 function detect-os() {
