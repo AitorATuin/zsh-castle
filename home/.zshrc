@@ -6,12 +6,6 @@ setopt appendhistory autocd extendedglob nomatch notify prompt_subst
 unsetopt beep
 bindkey -v
 # End of lines configured by zsh-newuser-install
-# The following lines were added by compinstall
-zstyle :compinstall filename '/Users/atuin/.zshrc'
-
-autoload -Uz compinit
-compinit
-# End of lines added by compinstall
 
 function detect-os() {
 	if [[ `uname` == 'Linux' ]]
@@ -65,4 +59,12 @@ echo $ANTIGEN_HS_RC
 	antigen-hs-compile
 	source $ANTIGEN_HS_RC
 }
+
+# The following lines were added by compinstall
+zstyle :compinstall filename '/Users/atuin/.zshrc'
+
+autoload -Uz compinit
+compinit
+# End of lines added by compinstall
+
 
