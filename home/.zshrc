@@ -6,6 +6,7 @@ export LC_ALL=es_ES.utf8
 export PATH=$PATH:$HOME/bin
 export MANPATH=$MANPATH:$HOME/man
 
+export LESS="-F -X -R"
 export EDITOR=vim
 
 # Lines configured by zsh-newuser-install
