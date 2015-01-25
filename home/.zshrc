@@ -1,6 +1,4 @@
 # Locale
-export LANG=es_ES.utf8
-export LC_ALL=es_ES.utf8
 
 export PATH=$PATH:$HOME/bin
 export MANPATH=$MANPATH:$HOME/man
@@ -57,6 +55,15 @@ fpath=($HOME/.homesick/repos/homeshick/completions $fpath)
 	fi
 }
 
+# Locale
+[ $OSX ] && {
+    export LC_ALL=es_ES.UTF-8  
+    export LANG=es_ES.UTF-8
+} || {
+    export LC_ALL=es_ES.utf8
+    export LANG=es_ES.utf8
+}
+
 ANTIGEN_HS_RC=~/.zsh/antigen-hs/init.zsh
 echo $ANTIGEN_HS_RC
 [ -f $ANTIGEN_HS_RC ] && {
@@ -77,5 +84,8 @@ zstyle :compinstall filename '/Users/atuin/.zshrc'
 autoload -Uz compinit
 compinit
 # End of lines added by compinstall
+
+#source /Users/atuin/Developer/Logikujo/pure/pure.plugin.zsh
+#fpath+=/Users/atuin/Developer/Logikujo/pure
 
 
