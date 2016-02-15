@@ -1,3 +1,4 @@
 *.swp
 home/.zsh/antigen-hs
 home/.zsh/antigen-hs/*
+*~

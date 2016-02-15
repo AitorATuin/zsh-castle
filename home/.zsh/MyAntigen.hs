@@ -1,13 +1,17 @@
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE ExtendedDefaultRules #-}
 module MyAntigen where
 
-import Antigen (AntigenConfiguration (..)
+import Antigen (
+                -- Rudimentary imports
+                AntigenConfig (..)
+              , defaultConfig
               , bundle
               , antigen
-              , developFromFileSystem)
-import Shelly (shelly)
-
+                -- If you want to source a bit trickier plugins
+              , ZshPlugin (..)
+              , antigenSourcingStrategy
+              , filePathsSourcingStrategy
+              )
 bundles =
   [ bundle "Tarrasch/zsh-functional"
   , bundle "Tarrasch/zsh-bd"
@@ -20,10 +24,13 @@ bundles =
   , bundle "zsh-users/zsh-syntax-highlighting"
   , bundle "zsh-users/zsh-history-substring-search"
   , bundle "jocelynmallon/zshmarks"
+  , bundle "chrissicool/zsh-256color"
+  , bundle "Tarrasch/zsh-colors"
+  --  , bundle "thvitt/tvline"
   -- , developFromFileSystem "/home/arash/repos/zsh-snakebite-completion"
   ]
 
-config = AntigenConfiguration bundles
+config = defaultConfig {plugins = bundles}
 
 main :: IO ()
-main = shelly $ antigen config
+main = antigen config

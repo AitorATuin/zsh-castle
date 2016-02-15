@@ -3,7 +3,7 @@ export LANG=es_ES.utf8
 export LC_ALL=es_ES.utf8
 >>>>>>> 01065e9... Added locale
 
-export PATH=$PATH:$HOME/bin
+export PATH=$PATH:$HOME/bin:$HOME/.luarocks/bin
 export MANPATH=$MANPATH:$HOME/man
 
 export LESS="-F -X -R"
@@ -71,10 +71,37 @@ fpath=($HOME/.homesick/repos/homeshick/completions $fpath)
     export LANG=es_ES.utf8
 }
 
+
+# The following lines were added by compinstall
+zstyle :compinstall filename '/Users/atuin/.zshrc'
+
+autoload -Uz compinit
+compinit
+# End of lines added by compinstall
+
+# ranger stuff
+export W3MIMGDISPLAY_PATH=/usr/libexec/w3m/w3mimgdisplay
+export RANGER_LOAD_DEFAULT_RC=FALSE
+
+# Nyaovim start
+function evim () {
+    local NODE_MODE=production
+    [ "$1" = "--dev" ] && {
+    	NODE_MODE=debug
+        PARAMS=${@:2}
+    } || PARAMS=$@
+    NODE_ENV=$NODE_MODE ~/node_modules/nyaovim/bin/cli.js $PARAMS
+}
+
+# colors in ls
+eval $(dircolors)
+alias ls="ls --color=always"
+
+# Source antigen-hs
+#  Fix the script to install antigen on first boot
 ANTIGEN_HS_RC=~/.zsh/antigen-hs/init.zsh
-echo $ANTIGEN_HS_RC
 [ -f $ANTIGEN_HS_RC ] && {
-	echo "Loading antigen-hs"
+	echo "antigen-hs installed. Loading antigen-hs"
 	source $ANTIGEN_HS_RC
 } || {
 	echo "antigen-hs not installed, cloning now"
@@ -85,14 +112,22 @@ echo $ANTIGEN_HS_RC
 	source $ANTIGEN_HS_RC
 }
 
-# The following lines were added by compinstall
-zstyle :compinstall filename '/Users/atuin/.zshrc'
+# Theme
+THEMES_DIR=~/.zsh/themes
+CURRENT_THEME=${THEMES_DIR}/current
+source ~/.zsh/themes/current/theme.zsh-theme
 
-autoload -Uz compinit
-compinit
-# End of lines added by compinstall
-
-#source /Users/atuin/Developer/Logikujo/pure/pure.plugin.zsh
-#fpath+=/Users/atuin/Developer/Logikujo/pure
-
-
+# completion on first-tab
+zstyle ':completion:*' menu select
+zstyle -e ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)*==34=34}:${(s.:.)LS_COLORS}")'
+function first-tab () {
+	[ $#BUFFER = 0 ] && {
+		BUFFER="cd "
+		CURSOR=3
+		zle list-choices
+	} || {
+		zle expand-or-complete
+	}
+}
+zle -N first-tab
+bindkey '^I' first-tab
