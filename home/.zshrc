@@ -1,7 +1,6 @@
 # Locale
 export LANG=es_ES.utf8
 export LC_ALL=es_ES.utf8
->>>>>>> 01065e9... Added locale
 
 export PATH=$PATH:$HOME/bin:$HOME/.luarocks/bin
 export MANPATH=$MANPATH:$HOME/man
