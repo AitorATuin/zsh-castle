@@ -26,6 +26,8 @@ bundles =
   , bundle "jocelynmallon/zshmarks"
   , bundle "chrissicool/zsh-256color"
   , bundle "Tarrasch/zsh-colors"
+  , bundle "peterhurford/git-aliases.zsh"
+  , bundle "unixorn/git-extra-commands"
   --  , bundle "thvitt/tvline"
   -- , developFromFileSystem "/home/arash/repos/zsh-snakebite-completion"
   ]
