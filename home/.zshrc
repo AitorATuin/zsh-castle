@@ -2,7 +2,7 @@
 export LANG=es_ES.utf8
 export LC_ALL=es_ES.utf8
 
-export PATH=$PATH:$HOME/bin:$HOME/.luarocks/bin
+export PATH=$HOME/bin:$HOME/.luarocks/bin:$PATH
 export MANPATH=$MANPATH:$HOME/man
 
 export LESS="-F -X -R"
@@ -53,11 +53,12 @@ source "$HOME/.homesick/repos/homeshick/homeshick.sh"
 fpath=($HOME/.homesick/repos/homeshick/completions $fpath)
 
 # Setup GHC path on macosx
+PATH="$HOME/.cabal/bin:$PATH"
 [ $OSX ] && {
 	# Add GHC 7.8.3 to the PATH, via http://ghcformacosx.github.io/
 	export GHC_DOT_APP="/opt/homebrew-cask/Caskroom/ghc/7.8.3-r1/ghc-7.8.3.app"
 	if [ -d "$GHC_DOT_APP" ]; then
-	    export PATH="${HOME}/.cabal/bin:${GHC_DOT_APP}/Contents/bin:${PATH}"
+	    export PATH="${GHC_DOT_APP}/Contents/bin:${PATH}"
 	fi
 }
 
@@ -130,3 +131,19 @@ function first-tab () {
 }
 zle -N first-tab
 bindkey '^I' first-tab
+
+# stack completion
+which stack && {
+    autoload -U +X bashcompinit && bashcompinit
+    eval "$(stack --bash-completion-script stack)"
+}
+
+# Source virtualenvs here
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# Task autocompletion
+fpath+=/usr/share/doc/task/scripts/zsh
+compdef _task task
+alias t=task
+autoload _task
