@@ -2,7 +2,7 @@
 export LANG=es_ES.utf8
 export LC_ALL=es_ES.utf8
 
-export PATH=$HOME/bin:$HOME/.luarocks/bin:$PATH
+export PATH=$HOME/bin:$HOME/.luarocks/bin:$HOME/.local/bin:$PATH
 export MANPATH=$MANPATH:$HOME/man
 
 export LESS="-F -X -R"
@@ -139,6 +139,7 @@ which stack && {
 }
 
 # Source virtualenvs here
+#~/.virtualenvs/projects.sh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -147,3 +148,14 @@ fpath+=/usr/share/doc/task/scripts/zsh
 compdef _task task
 alias t=task
 autoload _task
+
+# some alias
+alias m5s="md5sum $@"
+local _dfc_bin=`which dfc`
+function _dfc () {
+    [ "$1" = "-r" ] && {
+        shift
+        df $@
+    } || dfc $@
+}
+[ -x $_dfc_bin ] && alias df=_dfc
