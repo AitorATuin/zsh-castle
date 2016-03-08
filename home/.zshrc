@@ -159,3 +159,41 @@ function _dfc () {
     } || dfc $@
 }
 [ -x $_dfc_bin ] && alias df=_dfc
+
+alias vim="gvim -v"
+
+export TARDIR_EXCLUDE=".*~"
+function _tardir () {
+    dir=$1
+    [ -z $1 ] && {
+        echo "tardir directory [gz | bz2 | xz]"
+        return 1
+    }
+    case $2 in
+        "bz2")
+            mode="cjvf"
+            suffix="tar.bz2"
+            ;;
+        "xz")
+            mode="cJvf"
+            suffix="tar.xz"
+            ;;
+        *)
+           mode="czvf"
+           suffix="tar.gz"
+    esac
+    [ -d $dir ] || {
+        red "$dir is not a valid directory"
+        return 1
+    }
+    tarball=`basename $dir.$suffix`
+    [ -f $tarball ] && {
+        red "$tarball already exists in the file system"
+        return 1
+    }
+    tmp_file=`tempfile`
+    find $dir -regex $TARDIR_EXCLUDE > $tmp_file
+    tar $mode $tarball $dir -X $tmp_file
+    rm -rf $tmp_file
+}
+alias tardir="_tardir $@"
