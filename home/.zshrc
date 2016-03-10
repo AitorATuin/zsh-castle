@@ -71,7 +71,6 @@ PATH="$HOME/.cabal/bin:$PATH"
     export LANG=es_ES.utf8
 }
 
-
 # The following lines were added by compinstall
 zstyle :compinstall filename '/Users/atuin/.zshrc'
 
@@ -101,12 +100,11 @@ alias ls="ls --color=always"
 #  Fix the script to install antigen on first boot
 ANTIGEN_HS_RC=~/.zsh/antigen-hs/init.zsh
 [ -f $ANTIGEN_HS_RC ] && {
-	echo "antigen-hs installed. Loading antigen-hs"
+	echo -e "\033[0;36m * antigen-hs installed. Loading antigen-hs"
 	source $ANTIGEN_HS_RC
 } || {
-	echo "antigen-hs not installed, cloning now"
+	echo -e "\033[0;33m * antigen-hs not installed, cloning now"
 	git clone https://github.com/Tarrasch/antigen-hs.git ~/.zsh/antigen-hs
-	echo "Compiling file"
 	source $ANTIGEN_HS_RC
 	antigen-hs-compile
 	source $ANTIGEN_HS_RC
@@ -133,7 +131,7 @@ zle -N first-tab
 bindkey '^I' first-tab
 
 # stack completion
-which stack && {
+which stack > /dev/null && {
     autoload -U +X bashcompinit && bashcompinit
     eval "$(stack --bash-completion-script stack)"
 }
@@ -148,6 +146,11 @@ fpath+=/usr/share/doc/task/scripts/zsh
 compdef _task task
 alias t=task
 autoload _task
+
+# key chain
+eval `keychain --eval`
+cyan " * Loading keys ..."
+for key in $(ssh-add -l | awk '{print($3)}'); do keychain -q $key; done
 
 # some alias
 alias m5s="md5sum $@"
@@ -197,3 +200,21 @@ function _tardir () {
     rm -rf $tmp_file
 }
 alias tardir="_tardir $@"
+
+fpath+=$HOME/.zsh/completions
+function _addkey () {
+    local key=$1
+    [ -f $HOME/.ssh/$key.rsa ] && {
+        keychain $HOME/.ssh/$key.rsa
+        return 0
+    }
+    [ -f $HOME/.ssh/$key ] && {
+        keychain $HOME/.ssh/$key
+        return 0
+    }
+    red "Unable to find key $key"
+}
+alias addkey="_addkey $1"
+compdef _addkey addkey
+autoload _addkey
+
