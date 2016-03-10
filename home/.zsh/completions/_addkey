@@ -1,1 +1,16 @@
-/home/eof/.homesick/repos/zsh-castle/home/.homesick/repos/zsh-castle/home/.zsh/completions/_addkey
+#compdef _addkey
+
+_addkey() { 
+    local curcontext="$curcontext" state line
+    typeset -A opt_args
+
+    _arguments '1:ssh key:->key'
+
+    case $state in
+    key)
+        _files -W $HOME/.ssh
+        ;;
+    esac 
+}
+
+_addkey "$@"

@@ -71,11 +71,10 @@ PATH="$HOME/.cabal/bin:$PATH"
     export LANG=es_ES.utf8
 }
 
+autoload -Uz compinit
 # The following lines were added by compinstall
 zstyle :compinstall filename '/Users/atuin/.zshrc'
 
-autoload -Uz compinit
-compinit
 # End of lines added by compinstall
 
 # ranger stuff
@@ -95,6 +94,7 @@ function evim () {
 # colors in ls
 eval $(dircolors)
 alias ls="ls --color=always"
+compinit
 
 # Source antigen-hs
 #  Fix the script to install antigen on first boot
@@ -202,7 +202,7 @@ function _tardir () {
 alias tardir="_tardir $@"
 
 fpath+=$HOME/.zsh/completions
-function _addkey () {
+function addkey () {
     local key=$1
     [ -f $HOME/.ssh/$key.rsa ] && {
         keychain $HOME/.ssh/$key.rsa
@@ -214,7 +214,6 @@ function _addkey () {
     }
     red "Unable to find key $key"
 }
-alias addkey="_addkey $1"
-compdef _addkey addkey
-autoload _addkey
 
+compinit
+compdef addkey='_addkey'
