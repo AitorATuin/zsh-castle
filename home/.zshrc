@@ -149,8 +149,28 @@ autoload _task
 
 # key chain
 eval `keychain --eval`
-cyan " * Loading keys ..."
-for key in $(ssh-add -l | awk '{print($3)}'); do keychain -q $key; done
+fpath+=$HOME/.zsh/completions
+function addkey () {
+    local key=$1
+    [ -f $HOME/.ssh/$key.rsa ] && {
+        keychain $HOME/.ssh/$key.rsa
+        return 0
+    }
+    [ -f $HOME/.ssh/$key ] && {
+        keychain $HOME/.ssh/$key
+        return 0
+    }
+    red "Unable to find key $key"
+}
+compinit
+compdef addkey='_addkey'
+keys=`ssh-add -l`
+[ $? -eq 0 ] && {
+    cyan " * Loading keys ..."
+    for key in $(echo $keys | awk '{print($3)}'); do
+        keychain -q $key
+    done
+}
 
 # some alias
 alias m5s="md5sum $@"
@@ -200,20 +220,3 @@ function _tardir () {
     rm -rf $tmp_file
 }
 alias tardir="_tardir $@"
-
-fpath+=$HOME/.zsh/completions
-function addkey () {
-    local key=$1
-    [ -f $HOME/.ssh/$key.rsa ] && {
-        keychain $HOME/.ssh/$key.rsa
-        return 0
-    }
-    [ -f $HOME/.ssh/$key ] && {
-        keychain $HOME/.ssh/$key
-        return 0
-    }
-    red "Unable to find key $key"
-}
-
-compinit
-compdef addkey='_addkey'
