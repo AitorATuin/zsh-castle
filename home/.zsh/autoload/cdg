@@ -1,0 +1,41 @@
+# Aitor P. Iturri 
+# Bookmarks shell
+
+local bookmarks_dir=$HOME/.shell_bookmarks
+local files
+
+# Get all bookmark files by default
+function cat_bookmark_dir () {
+    local bookmark_dir=${1:=${bookmarks_dir}}
+    local bookmarks=""
+    if [ -d ${bookmark_dir} ]; then
+        for f in "${(@f)$(ls ${bookmarks_dir})}"; do
+            contents=`cat "${bookmarks_dir}/${f}"` 
+            bookmarks="$bookmarks${contents}\n"
+        done
+    fi
+    for f in `echo $bookmarks`; do
+        [ -r $f ] && echo $f
+    done
+}
+
+function cat_bookmark_file () {
+    local bookmark_file=$1
+    [ -r ${bookmark_file} ] && {
+        files=list_bookmargs ${bookmark_file}
+    }
+
+    echo -e "${bookmark_file}" | sed '/^\s*$/'
+}
+
+function fzf_bookmarks () {
+    local bookmark_file=$1
+    [ -z ${bookmark_dir} ] && {
+        cat_bookmark_dir 
+    }
+}
+
+local dest=$(fzf_bookmarks | sed '/^\s*$/d' | fzf --exit-0)
+[[ -n $dest ]] && cd $dest
+
+

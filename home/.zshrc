@@ -51,6 +51,10 @@ detect-os
 
 source "$HOME/.homesick/repos/homeshick/homeshick.sh"
 fpath=($HOME/.homesick/repos/homeshick/completions $fpath)
+fpath=($HOME/.zsh/autoload $fpath)
+
+# Shell bookmarks
+autoload cdg
 
 # Setup GHC path on macosx
 PATH="$HOME/.cabal/bin:$PATH"
