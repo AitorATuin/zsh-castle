@@ -1,0 +1,46 @@
+# Aitor P. Iturri 
+# List sbo packages
+
+[ -n $SBOPKGS_DIR ] && SBOPKGS_DIR=/var/lib/sbopkg/SBo/14.1/ 
+
+function get_sbo_pkgs() {
+    awk '
+        function new_package(name, version, section, description)
+        {
+            SBO[name,"name"] = name
+            SBO[name,"version"] = version
+            SBO[name,"section"] = section
+            SBO[name,"description"] = description
+            PKGS[name]=1
+        }
+
+        {
+            if ($1 ~ /SLACKBUILD/) {
+                if ($2 ~ /NAME:/)
+                    name = $3
+                else if ($2 ~ /LOCATION:/) {
+                    split($3, location, "/")
+                    section = location[2]
+                }
+                else if ($2 ~ /VERSION:/)
+                    version = $3
+                else if ($2 ~ /SHORT/) {
+                    description = ""
+                    for (i=5;i<=NF;i++) {
+                        description = description " " $i
+                    }
+                }
+            } else if ($1 ~ //)
+                new_package(name, version, section, description)
+        }
+
+        END {
+            for (pkg in PKGS)
+                printf "%s | %s [%s]%s\n", SBO[pkg,"section"], \
+                                           SBO[pkg,"name"], \
+                                           SBO[pkg,"version"],\
+                                           SBO[pkg,"description"]
+        }' ${SBOPKGS_DIR}/SLACKBUILDS.TXT | sort
+} 
+
+get_sbo_pkgs | fzf --exit-0

@@ -55,6 +55,7 @@ fpath=($HOME/.zsh/autoload $fpath)
 
 # Shell bookmarks
 autoload cdg
+autoload lsp
 
 # Setup GHC path on macosx
 PATH="$HOME/.cabal/bin:$PATH"
