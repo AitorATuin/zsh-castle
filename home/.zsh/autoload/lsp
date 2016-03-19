@@ -5,13 +5,29 @@
 
 function get_sbo_pkgs() {
     awk '
+        function set_formatter(var_name) {
+            return "%"G[var_name]"s"
+        }
+        function set_global_len(var_name, v)
+        {
+            n = length(v)
+            if (n > G[var_name])
+                G[var_name] = n
+        }
+
         function new_package(name, version, section, description)
         {
-            SBO[name,"name"] = name
-            SBO[name,"version"] = version
-            SBO[name,"section"] = section
+            SBO[name,"name"]        = name
+            SBO[name,"version"]     = version
+            SBO[name,"section"]     = section
             SBO[name,"description"] = description
-            PKGS[name]=1
+            PKGS[name]              = 1
+        }
+
+        BEGIN {
+            G["name_len"]    = 0
+            G["section_len"] = 0
+            G["version_len"] = 0
         }
 
         {
@@ -35,12 +51,17 @@ function get_sbo_pkgs() {
         }
 
         END {
-            for (pkg in PKGS)
-                printf "%s | %s [%s]%s\n", SBO[pkg,"section"], \
-                                           SBO[pkg,"name"], \
-                                           SBO[pkg,"version"],\
-                                           SBO[pkg,"description"]
+            for (pkg in PKGS) {
+                printf "%s | %-s %s\n", "\033[0;37m" SBO[pkg,"section"] "\033[1;0m", \
+                                          "\033[1;33m" SBO[pkg,"name"] " - \033[1;34m" SBO[pkg,"version"], \
+                                          "\033[0;36m" SBO[pkg,"description"]
+            }
         }' ${SBOPKGS_DIR}/SLACKBUILDS.TXT | sort
 } 
 
-get_sbo_pkgs | fzf --exit-0
+out=$(get_sbo_pkgs | fzf --ansi --exit-0 --prompt="Slackbuild> " \
+    --expect=alt-c,alt-i,alt-u --multi)
+key=$(head -1 <<< "$out")
+for f in $(tail -n+2 <<< "$out" | awk '{print($3)}'); do
+    echo $f
+done
