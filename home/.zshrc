@@ -145,13 +145,14 @@ which stack > /dev/null && {
 #~/.virtualenvs/projects.sh
 
 # FZF config
+export FZF_ZSH=~/.zsh/fzf/fzf.zsh
 export FZF_DEFAULT_OPTS='
   --bind ctrl-f:page-down,ctrl-b:page-up
   --inline-info
   --color fg:-1,bg:-1,hl:103,fg+:222,bg+:234,hl+:104
   --color info:183,prompt:110,spinner:107,pointer:167,marker:215
 '
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f ${FZF_ZSH} ] && source ${FZF_ZSH}
 
 # Task autocompletion
 fpath+=/usr/share/doc/task/scripts/zsh
