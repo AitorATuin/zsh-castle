@@ -1,0 +1,24 @@
+# Aitor P. Iturri 
+# tardir
+# Adds key to keychain
+# vi: ft=sh
+
+
+function addkey () {
+    [ -z ${SSH_AGENT_PID} ] && {
+        red "ssh agent not loaded"
+        exit
+    }
+    local key=$1
+    [ -f $HOME/.ssh/$key.rsa ] && {
+        keychain $HOME/.ssh/$key.rsa
+        return 0
+    }
+    [ -f $HOME/.ssh/$key ] && {
+        keychain $HOME/.ssh/$key
+        return 0
+    }
+    red "Unable to find key $key"
+}
+
+

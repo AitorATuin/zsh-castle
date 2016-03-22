@@ -50,15 +50,6 @@ function detect-os() {
 }
 detect-os
 
-source "$HOME/.homesick/repos/homeshick/homeshick.sh"
-fpath=($HOME/.homesick/repos/homeshick/completions $fpath)
-fpath=($HOME/.zsh/autoload $fpath)
-
-# Shell bookmarks
-autoload cdg
-autoload lsp
-autoload tardir
-
 # Setup GHC path on macosx
 PATH="$HOME/.cabal/bin:$PATH"
 [ $OSX ] && {
@@ -162,21 +153,18 @@ compdef _task task
 alias t=task
 autoload _task
 
+source "$HOME/.homesick/repos/homeshick/homeshick.sh"
+fpath=($HOME/.homesick/repos/homeshick/completions $fpath)
+fpath=($HOME/.zsh/autoload $fpath)
+
+autoload cdg
+autoload lsp
+autoload tardir
+autoload addkey
+
 # key chain
 eval `keychain --eval`
 fpath+=$HOME/.zsh/completions
-function addkey () {
-    local key=$1
-    [ -f $HOME/.ssh/$key.rsa ] && {
-        keychain $HOME/.ssh/$key.rsa
-        return 0
-    }
-    [ -f $HOME/.ssh/$key ] && {
-        keychain $HOME/.ssh/$key
-        return 0
-    }
-    red "Unable to find key $key"
-}
 compinit
 compdef addkey='_addkey'
 keys=`ssh-add -l`
