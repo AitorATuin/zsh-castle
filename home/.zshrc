@@ -147,16 +147,18 @@ export FZF_DEFAULT_OPTS='
 '
 [ -f ${FZF_ZSH}/fzf.zsh ] && source ${FZF_ZSH}/fzf.zsh
 
+# Homeshick
+source "$HOME/.homesick/repos/homeshick/homeshick.sh"
+fpath=($HOME/.homesick/repos/homeshick/completions $fpath)
+
 # Task autocompletion
 fpath+=/usr/share/doc/task/scripts/zsh
 compdef _task task
 alias t=task
 autoload _task
 
-source "$HOME/.homesick/repos/homeshick/homeshick.sh"
-fpath=($HOME/.homesick/repos/homeshick/completions $fpath)
+# Custom autoload commands
 fpath=($HOME/.zsh/autoload $fpath)
-
 autoload cdg
 autoload lsp
 autoload tardir
@@ -185,7 +187,4 @@ function _dfc () {
     } || dfc $@
 }
 [ -x $_dfc_bin ] && alias df=_dfc
-
 alias vim="gvim -v"
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
