@@ -1,3 +1,4 @@
+export TERM=xterm-256color
 # Locale
 export LANG=es_ES.utf8
 export LC_ALL=es_ES.utf8
@@ -56,6 +57,7 @@ fpath=($HOME/.zsh/autoload $fpath)
 # Shell bookmarks
 autoload cdg
 autoload lsp
+autoload tardir
 
 # Setup GHC path on macosx
 PATH="$HOME/.cabal/bin:$PATH"
@@ -198,38 +200,4 @@ function _dfc () {
 
 alias vim="gvim -v"
 
-export TARDIR_EXCLUDE=".*~"
-function _tardir () {
-    dir=$1
-    [ -z $1 ] && {
-        echo "tardir directory [gz | bz2 | xz]"
-        return 1
-    }
-    case $2 in
-        "bz2")
-            mode="cjvf"
-            suffix="tar.bz2"
-            ;;
-        "xz")
-            mode="cJvf"
-            suffix="tar.xz"
-            ;;
-        *)
-           mode="czvf"
-           suffix="tar.gz"
-    esac
-    [ -d $dir ] || {
-        red "$dir is not a valid directory"
-        return 1
-    }
-    tarball=`basename $dir.$suffix`
-    [ -f $tarball ] && {
-        red "$tarball already exists in the file system"
-        return 1
-    }
-    tmp_file=`tempfile`
-    find $dir -regex $TARDIR_EXCLUDE > $tmp_file
-    tar $mode $tarball $dir -X $tmp_file
-    rm -rf $tmp_file
-}
-alias tardir="_tardir $@"
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
