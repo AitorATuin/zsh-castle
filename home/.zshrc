@@ -188,3 +188,5 @@ function _dfc () {
 }
 [ -x $_dfc_bin ] && alias df=_dfc
 alias vim="gvim -v"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
