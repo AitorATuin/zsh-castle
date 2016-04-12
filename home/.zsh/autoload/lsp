@@ -52,15 +52,15 @@ function get_sbo_pkgs() {
 
         END {
             for (pkg in PKGS) {
-                printf "%s | %-s %s\n", "\033[0;37m" SBO[pkg,"section"] "\033[1;0m", \
-                                          "\033[1;33m" SBO[pkg,"name"] " - \033[1;34m" SBO[pkg,"version"], \
-                                          "\033[0;36m" SBO[pkg,"description"]
+                printf "%s | %-s %s\n", "\033[0;37m" SBO[pkg,"section"] "\033[1;0m" \
+                                      , "\033[1;33m" SBO[pkg, "name"] " - \033[1;34m" SBO[pkg,"version"] \
+                                      , "\033[0;36m" SBO[pkg, "description"]
             }
         }' ${SBOPKGS_DIR}/SLACKBUILDS.TXT | sort
 } 
 
 out=$(get_sbo_pkgs | fzf --ansi --exit-0 --prompt="Slackbuild> " \
-    --expect=alt-c,alt-i,alt-u --multi)
+    --expect=alt-c,alt-i,alt-u,alt-e --multi)
 key=$(head -1 <<< "$out")
 for f in $(tail -n+2 <<< "$out" | awk '{print($3)}'); do
     echo $f
