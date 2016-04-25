@@ -3,7 +3,7 @@ export TERM=xterm-256color
 export LANG=es_ES.utf8
 export LC_ALL=es_ES.utf8
 
-export PATH=$HOME/bin:$HOME/.luarocks/bin:$HOME/.local/bin:$PATH
+export PATH=$HOME/.go/go1.6.2/bin:$HOME/.go/tools/bin:$HOME/bin:$HOME/.luarocks/bin:$HOME/.local/bin:$PATH
 export MANPATH=$MANPATH:$HOME/man
 
 export LESS="-F -X -R"
