@@ -3,7 +3,7 @@ export TERM=xterm-256color
 export LANG=es_ES.utf8
 export LC_ALL=es_ES.utf8
 
-export PATH=$HOME/.go/go1.6.2/bin:$HOME/.go/tools/bin:$HOME/bin:$HOME/.luarocks/bin:$HOME/.local/bin:$PATH
+export PATH=$HOME/bin:$HOME/.luarocks/bin:$HOME/.local/bin:$PATH
 export MANPATH=$MANPATH:$HOME/man
 
 export LESS="-F -X -R"
@@ -137,6 +137,13 @@ which stack > /dev/null && {
 # Source virtualenvs here
 #~/.virtualenvs/projects.sh
 
+# GO Stuff
+export PATH=$HOME/.go/go1.6.2/bin:$HOME/.go/tools/bin:$PATH
+export GOROOT=$HOME/.go/go1.6.2
+function go_path () {
+    [ -d $1 ] && export GOPATH=$1 || red "$1 is not a directory"
+}
+
 # FZF config
 export FZF_ZSH=~/.zsh/fzf
 export FZF_DEFAULT_OPTS='
@@ -190,3 +197,6 @@ function _dfc () {
 alias vim="gvim -v"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# azure completion
+[ -f ~/.zsh/completions/azure ] && source ~/.zsh/completions/azure
