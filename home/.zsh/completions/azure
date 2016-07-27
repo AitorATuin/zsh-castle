@@ -1,1 +1,1 @@
-. <(azure --completion)
+which azure >/dev/null 2>&1 && . <(azure --completion)
