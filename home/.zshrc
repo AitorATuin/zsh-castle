@@ -1,7 +1,4 @@
 export TERM=xterm-256color
-# Locale
-export LANG=es_ES.utf8
-export LC_ALL=es_ES.utf8
 
 export PATH=$HOME/bin:$HOME/.luarocks/bin:$HOME/.local/bin:$PATH
 export MANPATH=$MANPATH:$HOME/man
@@ -61,12 +58,17 @@ PATH="$HOME/.cabal/bin:$PATH"
 }
 
 # Locale
+export LOCALE=es_ES.utf8 
 [ $OSX ] && {
-    export LC_ALL=es_ES.UTF-8  
-    export LANG=es_ES.UTF-8
+    export LC_ALL=${LOCALE}  
+    export LANG=${LOCALE}
 } || {
-    export LC_ALL=es_ES.utf8
-    export LANG=es_ES.utf8
+    locale -a 2>/dev/null | grep ${LOCALE} >/dev/null || {
+        export LOCALE=en_US.utf8
+    }
+    export LANG=${LOCALE}
+    export LC_ALL=${LOCALE}
+
 }
 
 autoload -Uz compinit
@@ -88,6 +90,10 @@ function evim () {
     } || PARAMS=$@
     NODE_ENV=$NODE_MODE ~/node_modules/nyaovim/bin/cli.js $PARAMS
 }
+
+# Homeshick
+source "$HOME/.homesick/repos/homeshick/homeshick.sh"
+fpath=($HOME/.homesick/repos/homeshick/completions $fpath)
 
 # colors in ls
 eval $(dircolors)
@@ -111,7 +117,7 @@ ANTIGEN_HS_RC=~/.zsh/antigen-hs/init.zsh
 # Theme
 THEMES_DIR=~/.zsh/themes
 CURRENT_THEME=${THEMES_DIR}/current
-source ~/.zsh/themes/current/theme.zsh-theme
+[ -f ${CURRENT_THEME}/theme.zsh-theme ] && source ~/.zsh/themes/current/theme.zsh-theme
 
 # completion on first-tab
 zstyle ':completion:*' menu select
@@ -154,10 +160,6 @@ export FZF_DEFAULT_OPTS='
 '
 [ -f ${FZF_ZSH}/fzf.zsh ] && source ${FZF_ZSH}/fzf.zsh
 
-# Homeshick
-source "$HOME/.homesick/repos/homeshick/homeshick.sh"
-fpath=($HOME/.homesick/repos/homeshick/completions $fpath)
-
 # Task autocompletion
 fpath+=/usr/share/doc/task/scripts/zsh
 compdef _task task
@@ -165,6 +167,7 @@ alias t=task
 autoload _task
 
 # Custom autoload commands
+fpath+=$HOME/.zsh/completions
 fpath=($HOME/.zsh/autoload $fpath)
 autoload cdg
 autoload lsp
@@ -172,26 +175,29 @@ autoload tardir
 autoload addkey
 
 # key chain
-eval `keychain --eval`
-fpath+=$HOME/.zsh/completions
-compinit
-compdef addkey='_addkey'
-keys=`ssh-add -l`
-[ $? -eq 0 ] && {
-    cyan " * Loading keys ..."
-    for key in $(echo $keys | awk '{print($3)}'); do
-        keychain -q $key
-    done
+which keychain 2>/dev/null && {
+    eval `keychain --eval`
+    compinit
+    compdef addkey='_addkey'
+    keys=`ssh-add -l`
+    [ $? -eq 0 ] && {
+        cyan " * Loading keys ..."
+        for key in $(echo $keys | awk '{print($3)}'); do
+            keychain -q $key
+        done
+    }
 }
 
 # some alias
 alias m5s="md5sum $@"
-local _dfc_bin=`which dfc`
-function _dfc () {
-    [ "$1" = "-r" ] && {
-        shift
-        df $@
-    } || dfc $@
+local _dfc_bin=`which dfc 2>/dev/null`
+[ ! -z ${_dfc_bin} ] && {
+    function _dfc () {
+        [ "$1" = "-r" ] && {
+            shift
+            df $@
+        } || dfc $@
+    }
 }
 [ -x $_dfc_bin ] && alias df=_dfc
 alias vim="gvim -v"
@@ -200,3 +206,4 @@ alias vim="gvim -v"
 
 # azure completion
 [ -f ~/.zsh/completions/azure ] && source ~/.zsh/completions/azure
+
