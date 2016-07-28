@@ -22,7 +22,8 @@ bundles =
   , bundle "Tarrasch/pure"
   , bundle "Tarrasch/zsh-mcd"
   , bundle "zsh-users/zsh-syntax-highlighting"
-  , bundle "zsh-users/zsh-history-substring-search"
+  --  missing zsh.plugin file, fix it!
+  --, bundle "zsh-users/zsh-history-substring-search"
   , bundle "jocelynmallon/zshmarks"
   , bundle "chrissicool/zsh-256color"
   , bundle "Tarrasch/zsh-colors"
