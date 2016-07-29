@@ -7,7 +7,7 @@
 function addkey () {
     [ -z ${SSH_AGENT_PID} ] && {
         red "ssh agent not loaded"
-        exit
+        return 1
     }
     local key=$1
     [ -f $HOME/.ssh/$key.rsa ] && {
