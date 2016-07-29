@@ -191,7 +191,7 @@ which keychain 2>/dev/null && {
 # some alias
 alias m5s="md5sum $@"
 local _dfc_bin=`which dfc 2>/dev/null`
-[ ! -z ${_dfc_bin} -a -x $_dfc_bin ] && {
+[ ! -z ${_dfc_bin} ] && [ -x $_dfc_bin ] && {
     function _dfc () {
         [ "$1" = "-r" ] && {
             shift
