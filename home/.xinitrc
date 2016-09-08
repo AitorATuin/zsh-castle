@@ -21,6 +21,7 @@ usermodmap=$HOME/.Xmodmap
 sysresources=/etc/X11/xinit/.Xresources
 sysmodmap=/etc/X11/xinit/.Xmodmap
 urxvtd=/usr/bin/urxvtd
+autocutsel=$(which autocutsel)
 
 # merge in defaults and keymaps
 [ -f $sysresources ] && xrdb -merge $sysresources
@@ -29,11 +30,15 @@ urxvtd=/usr/bin/urxvtd
 [ -f $usermodmap ] && xmodmap $usermodmap
 [ -f $urxvtd ] && urxvtd -q &
 
-setxkbmap se
+# Unify PRIMARY selection and CLIPBOARD
+[ -z "$autocutsel" ] && [ -f $autocutsel ] && autocutsel &
+[ -z "$autocutsel" ] && [ -f $autocutsel ] && autocutsel -s PRIMARY &
+
+setxkbmap es
 
 case $WMANAGER in
     xmonad)
-        ~./cabal/bin/xmonad
+        xmonad
         ;;
     wmaker)
         wmaker
