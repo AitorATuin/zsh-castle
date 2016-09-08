@@ -9,9 +9,10 @@ Xft.lcdfilter: lcddefault
 
 ! --[ Mouse ]-----------------------------------------------
 Xcursor.theme: Vanilla-DMZ
-Xcursor.size:  24
+Xcursor.size:  20
 
-
+! --[ URxvt ]-----------------------------------------------
+! --[ List of URxvt options ]--------------------------------------
 ! URxvt*termName:                       string
 ! URxvt*geometry:                       geometry
 ! URxvt*chdir:                          string
@@ -144,7 +145,6 @@ Xcursor.size:  24
 ! URxvt*tabbar-bg:                      colour
 ! URxvt*tabbar-fg:                      colour
 ! URxvt*url-launcher:                   string
-
 URxvt.keysym.M-u: perl:url-select:select_next
 URxvt.keysym.M-Escape: perl:keyboard-select:activate
 URxvt.url-select.launcher: /usr/bin/xdg-open
@@ -175,26 +175,13 @@ URxvt.letterSpace: 0
 URxvt.lineSpace: 2
 URxvt.tripleclickwords: true
 URxvt.insecure: true
-! |- Definimos el tipo de fuente a usar (para obtener una lista completa de fuentes disponibles en su sistema use ¿fc-list¿ en su consola).
-!URxvt*font: xft:Ubuntu Mono derivative Powerline
-!URxvt*font: xft:Inconsolata for Powerline:pixelsize=16
-! |- Si se presenta separación entre caracteres agregue, donde -1 es la cantidad de pixeles a disminuir
-! |- Definimos el color de fondo de las pestañas
-! |- Definimos el color frontal de las pestañas
-! |- Definimos el color de fondo de los separadores de pestañas
-! |- Definimos el color frontal de los separadores de las pestañas
-URxvt.font: xft:Cousine for Powerline
-URxvt.boldFont: xft:Cousine for Powerline
-!URxvt.font: xft:Inconsolata
-!URxvt.boldFont: xft:Inconsolata
+URxvt.font: xft:Cousine for Powerline:size=10:style=Medium
+URxvt*letterSpace: -1
 URxvt*meta8: false
-
 URxvt.cursorColor: #83C048
 URxvt.highlightColor: #444444
 URxvt.underlineColor: #999999
 URxvt.colorUL: #4682B4
-
-! --[ Colors ]----------------------------------------------
 ! tango theme
 URxvt.background:              #000000
 URxvt.foreground:              #babdb6
