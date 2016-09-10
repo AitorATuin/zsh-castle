@@ -144,10 +144,15 @@ which stack > /dev/null && {
 #~/.virtualenvs/projects.sh
 
 # GO Stuff
-export PATH=$HOME/.go/go1.6.2/bin:$HOME/.go/tools/bin:$PATH
-export GOROOT=$HOME/.go/go1.6.2
+# By default unset always GOBIN so new packages will go to GOPATH
+unset GOBIN
+export GOPATH=$HOME/Projects/go
 function go_path () {
     [ -d $1 ] && export GOPATH=$1 || red "$1 is not a directory"
+}
+[ -z ${GOPATH} ] && {
+    yellow " * GOPATH is not set!, setting it $HOME/.go"
+    go_path $HOME/.go
 }
 
 # FZF config
@@ -175,7 +180,7 @@ autoload tardir
 autoload addkey
 
 # key chain
-which keychain 2>/dev/null && {
+which keychain >/dev/null && {
     eval `keychain --eval`
     compinit
     compdef addkey='_addkey'
