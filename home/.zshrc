@@ -212,3 +212,8 @@ alias vim="gvim -v"
 # azure completion
 [ -f ~/.zsh/completions/azure ] && source ~/.zsh/completions/azure
 
+# set stack aliases
+[ -x $HOME/.cabal/bin/stack ] && {
+    alias ghci='stack exec -- ghci'
+    alias ghc='stack exec -- ghc'
+}
