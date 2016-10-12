@@ -226,27 +226,34 @@ alias vim="gvim -v"
 
 # tmux python powerline
 tmux_bin=$(which tmux)
+function run_tmux () {
+    local args=$1
+    [ -z $args ] && $tmux_bin || $tmux_bin "$args"
+}
 function tmux_f() {
-    [ "$1" = "-f" ] && {
+    [ "$TMUX_NO_POWERLINE" = "1" ] && {
         local force=1
     } || {
         local force=0
     }
+    local args=$@
+    [ -z $args ] && local tmux_cmd=$tmux_bin || local tmux_cmd="$tmux_bin $args"
     [ $ARCH = "x86_64" ] && {
         export POWERLINE_HOME=$HOME/.local/lib64/python3.5/site-packages/powerline/
     } || {
         export POWERLINE_HOME=$HOME/.local/lib/python3.5/site-packages/powerline/
     }
-    echo $POWERLINE_HOME
-    [ -d $POWERLINE_HOME ] && {
-        $tmux_bin
-    } || {
-        [ $force -eq 1 ] && {
-            $tmux_bin
-        } || {
-            yellow "Powerline not installed!"
-            yellow "Install it using `pip3 install --user` or use -f flag to run it without powerline"
-        }
-    }
+    if [ -d $POWERLINE_HOME ]
+    then
+        run_tmux $@
+    elif [ $force -eq 1 ]
+    then
+        run_tmux $@
+    else
+        yellow "Powerline not installed!"
+        yellow "Install it using `pip3 install --user` or set the env var TMUX_NO_POWERLINE=1 to run it without powerline"
+    fi
 }
+# This is needed, otherwise default fzf-tmux will be called always
+[ -z $TMUX ] && export FZF_TMUX=-1 || export FZF_TMUX=1
 alias tmux=tmux_f
