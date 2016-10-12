@@ -25,6 +25,12 @@ function detect-os() {
 	then
 		export LINUX=1
 		export GNU_USERLAND=1
+        if [[ `arch` == 'x86_64' ]]
+        then
+            export ARCH=x86_64
+        else
+            export ARCH=i686
+        fi
 	else
 		export LINUX=
 	fi
@@ -217,3 +223,30 @@ alias vim="gvim -v"
     alias ghci='stack exec -- ghci'
     alias ghc='stack exec -- ghc'
 }
+
+# tmux python powerline
+tmux_bin=$(which tmux)
+function tmux_f() {
+    [ "$1" = "-f" ] && {
+        local force=1
+    } || {
+        local force=0
+    }
+    [ $ARCH = "x86_64" ] && {
+        export POWERLINE_HOME=$HOME/.local/lib64/python3.5/site-packages/powerline/
+    } || {
+        export POWERLINE_HOME=$HOME/.local/lib/python3.5/site-packages/powerline/
+    }
+    echo $POWERLINE_HOME
+    [ -d $POWERLINE_HOME ] && {
+        $tmux_bin
+    } || {
+        [ $force -eq 1 ] && {
+            $tmux_bin
+        } || {
+            yellow "Powerline not installed!"
+            yellow "Install it using `pip3 install --user` or use -f flag to run it without powerline"
+        }
+    }
+}
+alias tmux=tmux_f
