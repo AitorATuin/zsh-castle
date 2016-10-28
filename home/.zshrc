@@ -20,6 +20,18 @@ bindkey -M vicmd '?' history-incremental-search-backward
 zstyle :compinstall filename '/Users/atuin/.zshrc'
 # End of lines configured by zsh-newuser-install
 
+function detect-distro() {
+    if [ -f /etc/slackware-version ];
+    then
+        export LINUX_DISTRO=slackware
+    elif [ -d /System ];
+    then
+        export LINUX_DISTRO=GoboLinux
+    else
+        export LINUX_DISTRO=unknown
+    fi
+}
+
 function detect-os() {
 	if [[ `uname` == 'Linux' ]]
 	then
@@ -51,7 +63,9 @@ function detect-os() {
 	    fi
 	fi
 }
+
 detect-os
+[ ${LINUX-0} -eq 1 ] && detect-distro
 
 # Setup GHC path on macosx
 PATH="$HOME/.cabal/bin:$PATH"
@@ -257,3 +271,12 @@ function tmux_f() {
 # This is needed, otherwise default fzf-tmux will be called always
 [ -z $TMUX ] && export FZF_TMUX=-1 || export FZF_TMUX=1
 alias tmux=tmux_f
+
+# ncmpcpp alias
+alias mpcc=ncmpcpp
+
+[ ${LINUX-0} -eq 1 ] && [ ${LINUX_DISTRO} = "slackware" ] && {
+    alias go-gcc=/usr/bin/go
+    alias go=/usr/lib64/go1.7.3/go/bin/go
+}
+
