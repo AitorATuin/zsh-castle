@@ -33,35 +33,35 @@ function detect-distro() {
 }
 
 function detect-os() {
-	if [[ `uname` == 'Linux' ]]
-	then
-		export LINUX=1
-		export GNU_USERLAND=1
+    if [[ `uname` == 'Linux' ]]
+    then
+        export LINUX=1
+        export GNU_USERLAND=1
         if [[ `arch` == 'x86_64' ]]
         then
             export ARCH=x86_64
         else
             export ARCH=i686
         fi
-	else
-		export LINUX=
-	fi
+    else
+        export LINUX=
+    fi
 
-	if [[ `uname` == 'Darwin' ]]
-	then
-		export OSX=1
-	else
-		export OSX=
-	fi
+    if [[ `uname` == 'Darwin' ]]
+    then
+        export OSX=1
+    else
+        export OSX=
+    fi
 
-	# Detect Macports GNU userland installation
-	if [[ "$OSX" == "1" ]]
-	then
-	    if [[ -e /opt/local/libexec/gnubin ]]
-	    then
-		export GNU_USERLAND=1
-	    fi
-	fi
+    # Detect Macports GNU userland installation
+    if [[ "$OSX" == "1" ]]
+    then
+        if [[ -e /opt/local/libexec/gnubin ]]
+        then
+        export GNU_USERLAND=1
+        fi
+    fi
 }
 
 detect-os
@@ -70,11 +70,11 @@ detect-os
 # Setup GHC path on macosx
 PATH="$HOME/.cabal/bin:$PATH"
 [ $OSX ] && {
-	# Add GHC 7.8.3 to the PATH, via http://ghcformacosx.github.io/
-	export GHC_DOT_APP="/opt/homebrew-cask/Caskroom/ghc/7.8.3-r1/ghc-7.8.3.app"
-	if [ -d "$GHC_DOT_APP" ]; then
-	    export PATH="${GHC_DOT_APP}/Contents/bin:${PATH}"
-	fi
+    # Add GHC 7.8.3 to the PATH, via http://ghcformacosx.github.io/
+    export GHC_DOT_APP="/opt/homebrew-cask/Caskroom/ghc/7.8.3-r1/ghc-7.8.3.app"
+    if [ -d "$GHC_DOT_APP" ]; then
+        export PATH="${GHC_DOT_APP}/Contents/bin:${PATH}"
+    fi
 }
 
 # Locale
@@ -105,7 +105,7 @@ export RANGER_LOAD_DEFAULT_RC=FALSE
 function evim () {
     local NODE_MODE=production
     [ "$1" = "--dev" ] && {
-    	NODE_MODE=debug
+        NODE_MODE=debug
         PARAMS=${@:2}
     } || PARAMS=$@
     NODE_ENV=$NODE_MODE ~/node_modules/nyaovim/bin/cli.js $PARAMS
@@ -124,14 +124,14 @@ compinit
 #  Fix the script to install antigen on first boot
 ANTIGEN_HS_RC=~/.zsh/antigen-hs/init.zsh
 [ -f $ANTIGEN_HS_RC ] && {
-	echo -e "\033[0;36m * antigen-hs installed. Loading antigen-hs"
-	source $ANTIGEN_HS_RC
+    echo -e "\033[0;36m * antigen-hs installed. Loading antigen-hs"
+    source $ANTIGEN_HS_RC
 } || {
-	echo -e "\033[0;33m * antigen-hs not installed, cloning now"
-	git clone https://github.com/Tarrasch/antigen-hs.git ~/.zsh/antigen-hs
-	source $ANTIGEN_HS_RC
-	antigen-hs-compile
-	source $ANTIGEN_HS_RC
+    echo -e "\033[0;33m * antigen-hs not installed, cloning now"
+    git clone https://github.com/Tarrasch/antigen-hs.git ~/.zsh/antigen-hs
+    source $ANTIGEN_HS_RC
+    antigen-hs-compile
+    source $ANTIGEN_HS_RC
 }
 
 # Theme
@@ -143,13 +143,13 @@ CURRENT_THEME=${THEMES_DIR}/current
 zstyle ':completion:*' menu select
 zstyle -e ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)*==34=34}:${(s.:.)LS_COLORS}")'
 function first-tab () {
-	[ $#BUFFER = 0 ] && {
-		BUFFER="cd "
-		CURSOR=3
-		zle list-choices
-	} || {
-		zle expand-or-complete
-	}
+    [ $#BUFFER = 0 ] && {
+        BUFFER="cd "
+        CURSOR=3
+        zle list-choices
+    } || {
+        zle expand-or-complete
+    }
 }
 zle -N first-tab
 bindkey '^I' first-tab
@@ -280,3 +280,10 @@ alias mpcc=ncmpcpp
     alias go=/usr/lib64/go1.7.3/go/bin/go
 }
 
+function debug_comp () {
+    zstyle ':completion:*' verbose yes
+    zstyle ':completion:*:descriptions' format  '%B%d%b'
+    zstyle ':completion:*:messages' format '%d'
+    zstyle ':completion:*:warnings' format 'No matches for :%d'
+    zstyle ':completion:*' group-name "
+}
