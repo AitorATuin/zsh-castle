@@ -4,7 +4,9 @@ export PATH=$HOME/bin:$HOME/.luarocks/bin:$HOME/.local/bin:$PATH
 export MANPATH=$MANPATH:$HOME/man
 
 export LESS="-F -X -R"
-export EDITOR=vim
+export EDITOR=nvim
+alias vim=nvim
+alias vi=nvim
 
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
@@ -167,13 +169,20 @@ which stack > /dev/null && {
 # By default unset always GOBIN so new packages will go to GOPATH
 unset GOBIN
 export GOPATH=$HOME/Projects/go
+export NVIM_GOPATH=$HOME/.local/share/vim/go
 function go_path () {
-    [ -d $1 ] && export GOPATH=$1 || red "$1 is not a directory"
+    [ -d $1 ] && {
+        export GOPATH=$1
+        export PATH=$PATH:$GOPATH/bin
+    } || red "$1 is not a directory"
 }
 [ -z ${GOPATH} ] && {
     yellow " * GOPATH is not set!, setting it $HOME/.go"
     go_path $HOME/.go
-}
+} ||  go_path ${GOPATH}
+
+# nvim go path
+[ -d $NVIM_GOPATH ] && export PATH=$PATH:$NVIM_GOPATH/bin
 
 # FZF config
 export FZF_ZSH=~/.zsh/fzf
@@ -225,7 +234,6 @@ local _dfc_bin=`which dfc 2>/dev/null`
     }
     alias df=_dfc
 }
-alias vim="gvim -v"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -272,6 +280,14 @@ function tmux_f() {
 [ -z $TMUX ] && export FZF_TMUX=-1 || export FZF_TMUX=1
 alias tmux=tmux_f
 
+# Tmuxinator
+
+TMUXINATOR_HOME=$HOME/.gem/ruby/2.2.0
+[ -d $TMUXINATOR_HOME ] && {
+    compdef _tmuxinator tmuxinator mux
+    export PATH=$PATH:$TMUXINATOR_HOME/bin
+    alias mux="tmuxinator"
+}
 # ncmpcpp alias
 alias mpcc=ncmpcpp
 
@@ -285,5 +301,6 @@ function debug_comp () {
     zstyle ':completion:*:descriptions' format  '%B%d%b'
     zstyle ':completion:*:messages' format '%d'
     zstyle ':completion:*:warnings' format 'No matches for :%d'
-    zstyle ':completion:*' group-name "
+    zstyle ':completion:*' group-name
 }
+
