@@ -1,0 +1,3 @@
+[submodule "desk"]
+	path = desk
+	url = https://github.com/jamesob/desk.git
