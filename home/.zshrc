@@ -122,6 +122,9 @@ function evim () {
 source "$HOME/.homesick/repos/homeshick/homeshick.sh"
 fpath=($HOME/.homesick/repos/homeshick/completions $fpath)
 
+# Desk
+fpath=($HOME/.local/share/zsh/desk $fpath)
+
 # colors in ls
 eval $(dircolors)
 alias ls="ls --color=always"
