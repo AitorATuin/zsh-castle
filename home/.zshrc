@@ -1,10 +1,15 @@
-export TERM=xterm-256color
 
+# Some env variables
+#
+export TERM=xterm-256color
 export PATH=$HOME/bin:$HOME/.luarocks/bin:$HOME/.local/bin:$PATH
 export MANPATH=$MANPATH:$HOME/man
-
 export LESS="-F -X -R"
 export EDITOR=nvim
+export PYTHON=python3
+export PIP=pip3
+
+# Some basic aliases
 alias vim=nvim
 alias vi=nvim
 
@@ -246,6 +251,24 @@ local _dfc_bin=`which dfc 2>/dev/null`
     alias ghc='stack exec -- ghc'
 }
 
+# Powerline home
+[ $ARCH = "x86_64" ] && {
+    export POWERLINE_HOME=$HOME/.local/lib64/python3.5/site-packages/powerline/
+} || {
+    export POWERLINE_HOME=$HOME/.local/lib/python3.5/site-packages/powerline/
+}
+
+function detect_powerline() {
+    if [ $ARCH = "x86_64" ] && [ -d $HOME/.local/lib64/python3.5/site-packages/powerline/ ]
+    then
+        export POWERLINE_HOME=$HOME/.local/lib64/python3.5/site-packages/powerline/
+    elif [ -d $HOME/.local/lib/python3.5/site-packages/powerline/ ]
+    then
+        export POWERLINE_HOME=$HOME/.local/lib/python3.5/site-packages/powerline/
+    fi
+}
+[ -z ${POWERLINE_HOME+1} ] && detect_powerline
+
 # tmux python powerline
 tmux_bin=$(which tmux)
 function run_tmux () {
@@ -259,12 +282,6 @@ function tmux_f() {
         local force=0
     }
     local args=$@
-    [ -z $args ] && local tmux_cmd=$tmux_bin || local tmux_cmd="$tmux_bin $args"
-    [ $ARCH = "x86_64" ] && {
-        export POWERLINE_HOME=$HOME/.local/lib64/python3.5/site-packages/powerline/
-    } || {
-        export POWERLINE_HOME=$HOME/.local/lib/python3.5/site-packages/powerline/
-    }
     if [ -d $POWERLINE_HOME ]
     then
         run_tmux $@
@@ -281,7 +298,6 @@ function tmux_f() {
 alias tmux=tmux_f
 
 # Tmuxinator
-
 TMUXINATOR_HOME=$HOME/.gem/ruby/2.2.0
 [ -d $TMUXINATOR_HOME ] && {
     compdef _tmuxinator tmuxinator mux
