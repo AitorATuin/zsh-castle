@@ -323,3 +323,5 @@ function debug_comp () {
     zstyle ':completion:*' group-name
 }
 
+# Hook for desk activation
+[ -n "$DESK_ENV" ] && source "$DESK_ENV" || true
