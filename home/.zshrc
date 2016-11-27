@@ -123,7 +123,27 @@ source "$HOME/.homesick/repos/homeshick/homeshick.sh"
 fpath=($HOME/.homesick/repos/homeshick/completions $fpath)
 
 # Desk
+function desk_f () {
+    if [ $# -eq 2 ]; then
+        local cmd=$1
+        local desk=$2
+        if [ ! -z $cmd ] && [ ! -z $desk ] && [ "$cmd" = "source" ]
+        then
+            local desk_path=$(desk path $desk)
+            [ "${desk_path}"EMPTY != "EMPTY" ] &&{
+                source ${desk_path}
+                return 0
+            } || {
+                echo "Couldn't found desktop file for $1"
+                return 1
+            }
+        fi
+    fi
+    desk $@
+}
+alias d=desk_f
 fpath=($HOME/.local/share/zsh/desk $fpath)
+export DESK_LIB_DIR=~/.desk/lib
 
 # colors in ls
 eval $(dircolors)
@@ -172,25 +192,6 @@ which stack > /dev/null && {
 
 # Source virtualenvs here
 #~/.virtualenvs/projects.sh
-
-# GO Stuff
-# By default unset always GOBIN so new packages will go to GOPATH
-unset GOBIN
-export GOPATH=$HOME/Projects/go
-export NVIM_GOPATH=$HOME/.local/share/vim/go
-function go_path () {
-    [ -d $1 ] && {
-        export GOPATH=$1
-        export PATH=$PATH:$GOPATH/bin
-    } || red "$1 is not a directory"
-}
-[ -z ${GOPATH} ] && {
-    yellow " * GOPATH is not set!, setting it $HOME/.go"
-    go_path $HOME/.go
-} ||  go_path ${GOPATH}
-
-# nvim go path
-[ -d $NVIM_GOPATH ] && export PATH=$PATH:$NVIM_GOPATH/bin
 
 # FZF config
 export FZF_ZSH=~/.zsh/fzf
