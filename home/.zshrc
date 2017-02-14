@@ -2,7 +2,7 @@
 # Some env variables
 #
 export TERM=xterm-256color
-export PATH=$HOME/bin:$HOME/.luarocks/bin:$HOME/.local/bin:$PATH
+export PATH=$HOME/bin:$HOME/.local/bin:$PATH
 export MANPATH=$MANPATH:$HOME/man
 export LESS="-F -X -R"
 export EDITOR=nvim
@@ -91,11 +91,12 @@ export LOCALE=es_ES.utf8
     export LANG=${LOCALE}
 } || {
     locale -a 2>/dev/null | grep ${LOCALE} >/dev/null || {
+        echo "Local $LOCALE not found, setting default locale to en_US.utf8"
         export LOCALE=en_US.utf8
+    } && {
+        export LANG=${LOCALE}
+        export LC_ALL=${LOCALE}
     }
-    export LANG=${LOCALE}
-    export LC_ALL=${LOCALE}
-
 }
 
 autoload -Uz compinit
@@ -323,6 +324,36 @@ function debug_comp () {
     zstyle ':completion:*:warnings' format 'No matches for :%d'
     zstyle ':completion:*' group-name
 }
+
+# Lua
+function set_lua() {
+    local ver=$1
+    case $ver in
+        5.1)
+            alias lua=lua5.1
+            alias luac=luac5.1
+            alias luarocks=luarocks-5.1
+            ;;
+        5.2)
+            alias lua=lua5.2
+            alias luac=luac5.2
+            alias luarocks=luarocks-5.2
+            ;;
+        5.3)
+            alias lua=lua5.3
+            alias luac=luac5.3
+            alias luarocks=luarocks-5.3
+            ;;
+        *)
+            echo "Usage: set_lua [5.1|5.2|5.3]"
+            return 1
+    esac
+    unset LUA_CPATH
+    unset LUA_PATH
+    eval $(luarocks path --bin)
+    return 0
+}
+set_lua 5.3
 
 # Hook for desk activation
 [ -n "$DESK_ENV" ] && source "$DESK_ENV" || true
