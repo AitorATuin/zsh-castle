@@ -1,7 +1,9 @@
 
 # Some env variables
 #
-export TERM=xterm-256color
+# tmux likes screen-256color instead if xterm-256color, otherwise there are issues
+# with ncurses windows
+export TERM=screen-256color
 export PATH=$HOME/bin:$HOME/.local/bin:$PATH
 export MANPATH=$MANPATH:$HOME/man
 export LESS="-F -X -R"
