@@ -7,6 +7,8 @@ Xft.hintstyle: hintslight
 Xft.autohint: true
 Xft.lcdfilter: lcddefault
 
+URxvt.iso14755: True
+
 ! --[ Mouse ]-----------------------------------------------
 Xcursor.theme: Vanilla-DMZ
 Xcursor.size:  20
