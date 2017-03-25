@@ -218,6 +218,7 @@ autoload _task
 fpath+=$HOME/.zsh/completions
 fpath=($HOME/.zsh/autoload $fpath)
 autoload cdg
+autoload lss
 autoload lsp
 autoload tardir
 autoload addkey
