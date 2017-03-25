@@ -187,10 +187,12 @@ function first-tab () {
 zle -N first-tab
 bindkey '^I' first-tab
 
-# stack completion
+# Stack
 which stack > /dev/null && {
     autoload -U +X bashcompinit && bashcompinit
     eval "$(stack --bash-completion-script stack)"
+    alias ghc='stack exec -- ghc'
+    alias ghci='stack exec -- ghci'
 }
 
 # Source virtualenvs here
