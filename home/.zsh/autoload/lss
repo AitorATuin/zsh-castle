@@ -1,0 +1,118 @@
+#!/bin/zsh
+
+# AitorATuin
+# List stack binaries.
+# It also can delete selected binaries from local dir
+
+function debug {
+    echo "$@" 1>&2
+}
+
+function hash() {
+    local file=$1
+    echo $(md5sum $file | awk '{print($1)}')
+}
+
+# Echo the stack directory
+# Resolver version can be specified
+function get_stack_dir() {
+    local resolver_ver=$1
+    local global_stack_dir=~/.stack/snapshots
+    local local_stack_dir=.stack-work
+    local lts_dir=""
+    [ ! -d $local_stack_dir ] && stack_dir=$global_stack_dir || stack_dir=$local_stack_dir
+    [ ! -d $stack_dir ] && lts_dir="" || {
+        [ -z $resolver_ver ] \
+            && lts_dir=$stack_dir \
+            || lts_dir=$(find $stack_dir -type d -name lts-$resolver_ver -print)
+    }
+    echo $lts_dir
+}
+
+# Echo the stack local bin directory
+function get_stack_bin_dir() {
+    local stack_bin_dir=~/.local/bin
+    whereis stack >/dev/null && stack_bin_dir=$(stack path --local-bin)
+    echo $stack_bin_dir 
+}
+
+# Echo binaries in stack local bin path that matches those installed by stack
+function get_stack_binaries() {
+    local lts_resolver=$1
+    local lts_dir=$(get_stack_dir $lts_resolver)
+    local local_bin=$(get_stack_bin_dir)
+    [ -z $lts_dir ] && echo "" || {
+        for f in $(find $lts_dir -perm -a=x -print|grep bin/);
+        do
+            local file_name=${f##*/} 
+            local local_file=$local_bin/$file_name
+            [ -x $local_file ] && [ $(hash $local_file) = $(hash $f) ] && {
+                local path_list=(${(s:/:)f})
+                local r_path_list=(${(Oa)path_list})
+                local lts_version=$r_path_list[4]
+                local ghc_version=$r_path_list[3]
+                echo "$local_file [$lts_version|$ghc_version]"
+            }
+        done
+    }
+}
+
+function usage() {
+    echo "lss - Tool to list local binaries installed by stack"
+    echo ""
+    echo "lss options"
+    echo "options:"
+    echo "\t-a                       Don't feed output to fzf, show just a list"
+    echo "\t--lts-version=version    Specify the resolver version"
+    echo "\t-h --help                Show this help"
+    echo ""
+}
+
+function main() {
+    local do_fzf=1
+    local resolver_version=""
+    while [ "$1" != "" ];
+    do
+        local param=$(echo $1|awk -F= '{print($1)}')
+        local value=$(echo $1|awk -F= '{print($2)}')
+        case $param in
+            -h | --help)
+                usage
+                return 1
+                ;;
+            -a)
+                do_fzf=0
+                ;;
+            -l | --lts-version)
+                resolver_version=$value
+                ;;
+            *)
+                echo "ERROR: Unknown param \"$param\""
+                return 1
+                ;;
+        esac
+        shift
+    done
+    local cmd="get_stack_binaries $resolver_version"
+    [ $do_fzf -eq 0 ] && {
+        eval $cmd
+        return 0
+    }
+    cmd="$cmd | fzf --ansi --exit-0 --prompt=\"stack> \" --expect=alt-d,alt-o --multi"
+    out=`eval $cmd`
+    key=$(head -1 <<< "$out")
+    files=$(tail -n +2 <<< "$out")
+    case $key in
+        alt-d)
+            for file in $(echo $files | awk '{print($1)}');
+            do
+                echo "Deleting local binary installed by stack: $file"
+                rm $file
+            done
+            ;;
+        *)
+    esac
+    return 0
+}
+
+main $@
