@@ -8,6 +8,7 @@ export PATH=$HOME/bin:$HOME/.local/bin:$PATH
 export MANPATH=$MANPATH:$HOME/man
 export LESS="-F -X -R"
 export EDITOR=nvim
+export NVIM_TUI_ENABLE_TRUE_COLOR=1
 export PYTHON=python3
 export PIP=pip3
 
@@ -262,19 +263,16 @@ local _dfc_bin=`which dfc 2>/dev/null`
 }
 
 # Powerline home
-[ $ARCH = "x86_64" ] && {
-    export POWERLINE_HOME=$HOME/.local/lib64/python3.5/site-packages/powerline/
-} || {
-    export POWERLINE_HOME=$HOME/.local/lib/python3.5/site-packages/powerline/
-}
-
+# Always use python3
 function detect_powerline() {
-    if [ $ARCH = "x86_64" ] && [ -d $HOME/.local/lib64/python3.5/site-packages/powerline/ ]
+    local pyver=$(python3 --version | awk '{v=$2;sub(/\.[^\.]$/, "", v);print(v)}')
+    local pypath="python$pyver"
+    if [ $ARCH = "x86_64" ] && [ -d $HOME/.local/lib64/$pypath/site-packages/powerline/ ]
     then
-        export POWERLINE_HOME=$HOME/.local/lib64/python3.5/site-packages/powerline/
-    elif [ -d $HOME/.local/lib/python3.5/site-packages/powerline/ ]
+        export POWERLINE_HOME=$HOME/.local/lib64/$pypath/site-packages/powerline/
+    elif [ -d $HOME/.local/lib/$pypath/site-packages/powerline/ ]
     then
-        export POWERLINE_HOME=$HOME/.local/lib/python3.5/site-packages/powerline/
+        export POWERLINE_HOME=$HOME/.local/lib/$pypath/site-packages/powerline/
     fi
 }
 [ -z ${POWERLINE_HOME+1} ] && detect_powerline
