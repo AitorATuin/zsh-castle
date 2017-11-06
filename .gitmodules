@@ -1,3 +1,6 @@
 [submodule "desk"]
 	path = desk
 	url = https://github.com/jamesob/desk.git
+[submodule "home/.zsh/zilsh"]
+	path = home/.zsh/zilsh
+	url = https://github.com/NuckChorris/zilsh.git
