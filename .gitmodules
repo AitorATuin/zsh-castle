@@ -2,5 +2,5 @@
 	path = desk
 	url = https://github.com/jamesob/desk.git
 [submodule "home/.zsh/zplug"]
-	path = home/.zsh/zplug
+	path = zplug
 	url = https://github.com/zplug/zplug
