@@ -1,7 +1,7 @@
 
 # Some env variables
 #
-# tmux likes screen-256color instead if xterm-256color, otherwise there are issues
+# tmux likes screen-256color instead of xterm-256color, otherwise there are issues
 # with ncurses windows
 export TERM=screen-256color
 export PATH=$HOME/bin:$HOME/.local/bin:$PATH
@@ -153,20 +153,6 @@ export DESK_LIB_DIR=~/.desk/lib
 eval $(dircolors)
 alias ls="ls --color=always"
 compinit
-
-# Source antigen-hs
-#  Fix the script to install antigen on first boot
-ANTIGEN_HS_RC=~/.zsh/antigen-hs/init.zsh
-[ -f $ANTIGEN_HS_RC ] && {
-    echo -e "\033[0;36m * antigen-hs installed. Loading antigen-hs"
-    source $ANTIGEN_HS_RC
-} || {
-    echo -e "\033[0;33m * antigen-hs not installed, cloning now"
-    git clone https://github.com/Tarrasch/antigen-hs.git ~/.zsh/antigen-hs
-    source $ANTIGEN_HS_RC
-    antigen-hs-compile
-    source $ANTIGEN_HS_RC
-}
 
 # Theme
 THEMES_DIR=~/.zsh/themes
