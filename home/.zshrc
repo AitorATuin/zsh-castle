@@ -1,3 +1,22 @@
+###########
+#  zplug  #
+###########
+
+if [[ -f ~/.zsh/zplug/init.zsh ]] then
+    local USES_ZPLUG=1
+    source ~/.zsh/zplug/init.zsh
+
+    # zplug plugins here
+    zplug "zsh-users/zsh-syntax-highlighting"
+
+    # Geometry theme
+    zplug "geometry-zsh/geometry"
+
+    zplug load
+else
+    local USE_ZPLUG=0
+    echo "zplug not installed, it won't be used!"
+fi
 
 # Some env variables
 #
