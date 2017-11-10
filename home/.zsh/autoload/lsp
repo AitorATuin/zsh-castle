@@ -1,7 +1,7 @@
-# Aitor P. Iturri 
+# Atuin Dev
 # List sbo packages
 
-[ -n $SBOPKGS_DIR ] && SBOPKGS_DIR=/var/lib/sbopkg/SBo/14.1/ 
+[ -n $SBOPKGS_DIR ] && SBOPKGS_DIR=/var/lib/sbopkg/SBo/14.2/
 
 function get_sbo_pkgs() {
     awk '
