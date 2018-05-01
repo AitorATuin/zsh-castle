@@ -4,28 +4,34 @@ setopt appendhistory \
     autocd \
     extendedglob \
     nomatch \
-    noify \
+    notify \
     prompt_subst
 
 unsetopt beep
 
+fpath+=~/.zsh/completions
+fpath+=~/.zsh/autoload
+
 # autoload some stuff
-zstyle :compinstall filename '/Users/atuin/.zshrc'
 autoload -Uz compinit; compinit
+zstyle :compinstall filename '/Users/atuin/.zshrc'
 zstyle ':completion:*' menu select
 zstyle -e ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)*==34=34}:${(s.:.)LS_COLORS}")'
+
 autoload -Uz promptinit; promptinit
+
+autoload -Uz bashcompinit; bashcompinit
+
+# Custom autoload functions
 autoload cdg \
     lss \
     lsp \
     tardir \
-    addkey \
     bandcamp-dl
 
 # Keybinding
-
 bindkey -v
-bindkey -M vimcd '?' history-incremental-search-backward
+bindkey -M vicmd '?' history-incremental-search-backward
 function first-tab () {
     [ $#BUFFER = 0 ] && {
         BUFFER="cd "
