@@ -1,0 +1,26 @@
+# Script to run bandcamp_dl inside firejail from a virtualenv
+
+PRIVATE_DIR="~/.firejail/music"
+PROFILE_FILE="~/.firejail/profiles/musicdl.profile"
+DOWNLOAD_DIR="Download"
+PYTHONPATH='~/.virtualenvs/youtube-dl/lib/python3.6/site-packages'
+
+if [[ $1 == "--debug" ]]; then
+    shift
+    debug=""
+    url=$1
+    shift
+else 
+    debug="--quiet"
+    url=$1
+    shift
+fi
+
+opts="--base-dir='${DOWNLOAD_DIR}' $url"
+
+[[ $url == "" ]] && {
+    echo "Usage: $0 url"
+   
+} || {
+    firejail ${debug} --private-tmp --private=/home/atuin/.firejail/music --profile=${PROFILE_FILE} python3 -c "import re;import sys;import os;sys.path.insert(0, os.getenv('HOME') + '/.virtualenvs/youtube-dl/lib/python3.6/site-packages');from bandcamp_dl.__main__ import main;sys.argv[0] = re.sub(r'(-script\.pyw?|\.exe)?$', '', sys.argv[0]);sys.exit(main())" $@ --base-dir=${DOWNLOAD_DIR} "$url"
+}
