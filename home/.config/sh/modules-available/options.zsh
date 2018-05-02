@@ -13,7 +13,6 @@ fpath+=~/.zsh/completions
 fpath+=~/.zsh/autoload
 
 # autoload some stuff
-autoload -Uz compinit; compinit
 zstyle :compinstall filename '/Users/atuin/.zshrc'
 zstyle ':completion:*' menu select
 zstyle -e ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)*==34=34}:${(s.:.)LS_COLORS}")'
