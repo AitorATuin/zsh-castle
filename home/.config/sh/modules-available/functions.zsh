@@ -50,22 +50,6 @@ function debug_comp () {
     zstyle ':completion:*' group-name
 }
 
-function detect_powerline() {
-    local pyver=$(python3 --version | awk '{v=$2;sub(/\.[^\.]$/, "", v);print(v)}')
-    local pypath="python$pyver"
-    if [ -d $HOME/.virtualenvs/powerline/bin ]
-    then
-        #export POWERLINE_CONFIG_COMMAND=$HOME/.virtualenvs/powerline/bin/powerline-config
-    fi
-    if [ $ARCH = "x86_64" ] && [ -d $HOME/.virtualenvs/powerline/lib64/$pypath/site-packages/powerline/ ]
-    then
-        export POWERLINE_HOME=$HOME/.virtualenvs/powerline/lib64/$pypath/site-packages/powerline/
-    elif [ -d $HOME/.virtualenvs/powerline/lib/$pypath/site-packages/powerline/ ]
-    then
-        export POWERLINE_HOME=$HOME/.virtualenvs/lib/$pypath/site-packages/powerline/
-    fi
-}
-
 function evim () {
     local NODE_MODE=production
     [ "$1" = "--dev" ] && {
