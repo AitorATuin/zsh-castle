@@ -27,7 +27,8 @@ export SAVEHIST=1000
 
 eval $(dircolors)
 
-export LOCALE=es_ES.utf8 
+export LANG=es_ES.utf8
+export LC_ALL=es_ES.utf8
 
 export FZF_ZSH=~/.zsh/fzf
 export FZF_DEFAULT_OPTS='
