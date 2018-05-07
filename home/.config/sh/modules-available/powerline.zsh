@@ -32,7 +32,6 @@ _powerline_tmux_pane() {
 
 _powerline_init_tmux_support() {
 	emulate -L zsh
-    echo test -n "$TMUX" && tmux refresh -S
 	if test -n "$TMUX" && tmux refresh -S &>/dev/null ; then
 		# TMUX variable may be unset to create new tmux session inside this one
 		typeset -g _POWERLINE_TMUX="$TMUX"
@@ -213,6 +212,5 @@ setopt promptsubst
 # 	_powerline_init_modes_support
 # fi
 if "${POWERLINE_CONFIG_COMMAND}" shell --shell=zsh uses tmux ; then
-    echo $precmd_functions
 	_powerline_init_tmux_support
 fi
