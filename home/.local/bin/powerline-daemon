@@ -1,0 +1,5 @@
+#!/bin/sh
+
+LOCAL_POWERLINE_PATH=~/.local/opt/powerline
+
+PYTHONPATH=${LOCAL_POWERLINE_PATH} python3 ${LOCAL_POWERLINE_PATH}/scripts/powerline-daemon $@
