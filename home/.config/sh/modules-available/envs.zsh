@@ -1,9 +1,5 @@
 # Some env variables
 
-# tmux likes screen-256color instead of xterm-256color, otherwise there are issues
-# with ncurses windows
-export TERM=screen-256color
-
 export LESS='--quit-if-one-screen --ignore-case --status-column --LONG-PROMPT --RAW-CONTROL-CHARS --HILITE-UNREAD --tabs=4 --no-init --window=-4'
 export LESS_TERMCAP_mb=$'\E[1;31m'     # begin bold
 export LESS_TERMCAP_md=$'\E[1;36m'     # begin blink
