@@ -1,0 +1,20 @@
+{
+	"groups": {
+		"active_window_status": {"fg": "st1",   "bg": "st0",   "attrs": ["italic"]},
+		"window_status":        {"fg": "st15",   "bg": "st0",  "attrs": []},
+		"activity_status":      {"fg": "yellow", "bg": "st0",  "attrs": []},
+		"bell_status":          {"fg": "red",    "bg": "st0",  "attrs": []},
+		"window":               {"fg": "st14",   "bg": "st0",  "attrs": []},
+		"window:divider":       {"fg": "st14",   "bg": "st0",  "attrs": []},
+		"window:current":       {"fg": "st0",    "bg": "st5",  "attrs": ["bold"]},
+		"window_name":          {"fg": "black",  "bg": "st5",  "attrs": ["bold"]},
+		"session":              {"fg": "st0",    "bg": "st16", "attrs": ["bold"]},
+		"session:prefix":       {"fg": "st0",    "bg": "st15", "attrs": ["bold"]},
+        "git:branch_name":      {"fg": "black",  "bg": "st5",  "attrs": []},
+        "git:files_info":       {"fg": "st0",    "bg": "st15", "attrs": ["bold"]},
+        "git:branch_clean":     {"fg": "green",  "bg": "st0",  "attrs": []},
+        "git:branch_dirty":     {"fg": "st1",    "bg": "st0",  "attrs": []},
+        "git:branch_broken":    {"fg": "red",    "bg": "st0",  "attrs": []},
+        "hole":                 {"fg": "red",    "bg": "st0",  "attrs": []}
+	}
+}
