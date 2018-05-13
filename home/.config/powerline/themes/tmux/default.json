@@ -7,7 +7,7 @@
                 "function": "segments.tmux.git.git"
             },
             {
-                "function": "segments.tmux.net.hostname"
+                "function": "segments.tmux.hostname.hostname"
             }
 
         ]
