@@ -6,7 +6,7 @@
         "default_top_theme": "powerline",
         "log_file": "~/.local/log/powerline.log",
         "log_level": "DEBUG",
-        "paths": ["~/.config/powerline/"]
+        "paths": ["~/.local/opt/custom_segments"]
 	},
 	"ext": {
 		"ipython": {
