@@ -5,7 +5,7 @@
         "watcher": "auto",
         "default_top_theme": "powerline",
         "log_file": "~/.local/log/powerline.log",
-        "log_level": "DEBUG",
+        "log_level": "INFO",
         "paths": ["~/.local/opt/custom_segments"]
 	},
 	"ext": {
