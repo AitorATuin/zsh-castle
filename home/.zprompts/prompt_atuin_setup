@@ -1,7 +1,53 @@
+# vim: ft=zsh
+
+preexec() {
+    timer=${timer:-$SECONDS}
+    last_exit_code=0
+}
+
+left_prompt_exit_code() {
+    local exit_code=$1
+    if [ $exit_code -ne 0 ]; then
+        echo '%{\x1b[38;2;204;52;43m%} ⊢ %{\x1b[0m%}'
+    else
+        echo '%{\x1b[38;2;6;182;239m%} ⊢ %{\x1b[0m%}'
+    fi
+}
+
+right_prompt_exit_code() {
+    local exit_code=$1
+    if [ $exit_code -ne 0 ]; then
+        echo "%{\x1b[38;2;204;52;43m%}${exit_code}%{\x1b[0m%}"
+    else
+        echo "%{\x1b[38;2;72;182;133m%}${exit_code}%{\x1b[0m%}"
+    fi
+}
+
+left_prompt() {
+    echo $'%{\x1b[38;2;254;196;24m%}%n%{\x1b[38;2;6;182;239m%} ∘ %{\x1b[38;2;91;196;191m%}%M%{\x1b[0m% \x1b[38;2;6;182;239m%} ⊂ %{\x1b[38;2;192;91;164m%}⟨%15<⋯ <%~%<<% ⟩'
+}
+
+precmd() {
+    local last_exit_code=$?
+    local rexit_code=$(right_prompt_exit_code $last_exit_code)
+    local lexit_code=$(left_prompt_exit_code $last_exit_code)
+    PS1="$(left_prompt)${lexit_code}"
+    RPROMPT="⟦$rexit_code⎟"$'%{\x1b[38;2;254;196;24m%}%j%f'
+    if [[ $timer ]]; then
+        local time_elapsed=$(($SECONDS - $timer))
+        local time_limit=${ZSH_PROMPT_TIMER_LIMIT:-0}
+        if [[ $time_limit -lt $time_elapsed ]]; then
+            RPROMPT="$RPROMPT|"$'%{\x1b[38;2;239;97;85m%}'"${time_elapsed}"$'%{\x1b[0m%}s⟧'
+        else
+            RPROMPT=${RPROMPT}$'%{\x1b[0m%}⟧'
+        fi
+        unset timer
+    else
+        RPROMPT="$RPROMPT⟧"
+    fi
+}
 
 prompt_atuin_setup () {
-    PS1=$'%{\x1b[38;2;254;196;24m%}%n%{\x1b[38;2;6;182;239m%} ∘ %{\x1b[38;2;91;196;191m%}%M%{\x1b[0m% \x1b[38;2;6;182;239m%} ⊂ %{\x1b[38;2;192;91;164m%}⟨%15<⋯ <%~%<<% ⟩%{\x1b[38;2;6;182;239m%} ⊢ %{\x1b[0m%}'
-    RPROMPT='⟦%F{yellow}%?⎟%j%f⟧'
 }
 
 prompt_atuin_setup "$@"
