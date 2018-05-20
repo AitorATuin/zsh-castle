@@ -1,10 +1,11 @@
-#!/bin/zsh
+# vi: ft=zsh
 # Script to run watch network wit ss (it can watch a firejail network namespace) 
 # Requires zsh
 
 FIREJAIL_NS=""
 SS_OPTS="-tuap --options"
 WATCH_OPTS="-d -c -p -n 1"
+WITH_SUDO=0
 
 while [[ $# > 0 ]]; do
     if [[ $1 =~ ^--firejail=(.+)$ ]]; then
@@ -17,6 +18,9 @@ while [[ $# > 0 ]]; do
     elif [[ $1 =~ ^--watch-opts=(.+)$ ]]; then
         WATCH_OPTS=$match
         shift
+    elif [[ $1 =~ ^--sudo ]]; then
+        WITH_SUDO=1
+        shift
     else
         echo "Usage: watch-ss options"
         echo ""
@@ -24,13 +28,18 @@ while [[ $# > 0 ]]; do
         echo "   --firejail=namespace"
         echo "   --ss-opts=\"ss options\""
         echo "   --watch-opts=\"watch options\""
+        echo "   --sudo"
         echo
-        exit 1
+        return 1
     fi
 done
 
 if [[ $FIREJAIL_NS != "" ]]; then
-    firejail --join-network=$FIREJAIL_NS bash -c "watch ${WATCH_OPTS} /sbin/ss ${SS_OPTS}"
+    sudo firejail --join-network=$FIREJAIL_NS bash -c "watch ${WATCH_OPTS} /sbin/ss ${SS_OPTS}"
 else
-    watch ${WATCH_OPTS} /sbin/ss ${SS_OPTS}
+    if [[ $WITH_SUDO == 1 ]]; then
+        sudo watch ${WATCH_OPTS} /sbin/ss ${SS_OPTS}
+    else
+        watch ${WATCH_OPTS} /sbin/ss ${SS_OPTS}
+    fi
 fi

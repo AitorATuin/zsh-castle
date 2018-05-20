@@ -27,7 +27,8 @@ autoload cdg \
     lss \
     lsp \
     tardir \
-    bandcamp-dl
+    bandcamp-dl \
+    watch-ss
 
 # Colors by name - based on https://github.com/Tarrasch/zsh-colors
 colors=(black red green yellow blue magenta cyan white)
