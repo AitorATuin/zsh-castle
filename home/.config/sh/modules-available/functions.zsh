@@ -58,3 +58,47 @@ function evim () {
     } || PARAMS=$@
     NODE_ENV=$NODE_MODE ~/node_modules/nyaovim/bin/cli.js $PARAMS
 }
+
+function firefox() {
+    local profile=$1
+    local firejail_name=$2
+    local priv_folder=$3
+    local firejail_extra_opts=$4
+    local firefox_opts=$5
+    local firejail_dir=~/.firejail
+    local firejail_profiles=${firejail_dir}/profiles
+    local firejail_privates=${firejail_dir}/privates
+
+    if [[ $# < 3 ]]; then
+        echo "Usage: firefox profile jailname private_folder|none"
+        return 1
+    fi
+
+    [[ ! -f $firejail_profiles/$profile ]] && {
+        red "Profile $profile is not defined"
+        return 1
+    }
+
+    local firejail_opts="--name=$firejail_name --profile=${firejail_profiles}/${profile}"
+
+    if [[ $priv_folder == none ]]; then
+        firejail_opts="$firejail_opts --private"
+    else
+        [[ ! -d $firejail_privates/$priv_folder ]] && {
+            red "Private folder $priv_folder does not exists"
+            return 2
+        }
+        firejail_opts="$firejail_opts --private=${firejail_privates}/${priv_folder}"
+    fi
+
+    if [[ ! -z $firejail_extra_opts ]]; then
+        firejail_opts="$firejail_opts $firejail_extra_opts"
+    fi
+
+    if [[ -z $firefox_opts ]]; then
+        firefox_opts="--no-remote"
+    fi
+
+    # TODO: get rif of eval :/
+    eval firejail $firejail_opts /opt/firefox/firefox ${firefox_opts}
+}
