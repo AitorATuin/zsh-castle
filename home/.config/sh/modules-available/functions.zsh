@@ -60,28 +60,67 @@ function evim () {
 }
 
 function firefox() {
-    local profile=$1
-    local firejail_name=$2
-    local priv_folder=$3
-    local firejail_extra_opts=$4
-    local firefox_opts=$5
+    local profile
+    local firejail_name
+    local priv_folder
+    local firejail_extra_opts
+    local firefox_opts
     local firejail_dir=~/.firejail
     local firejail_profiles=${firejail_dir}/profiles
     local firejail_privates=${firejail_dir}/privates
 
-    if [[ $# < 3 ]]; then
-        echo "Usage: firefox profile jailname private_folder|none"
-        return 1
-    fi
-
-    [[ ! -f $firejail_profiles/$profile ]] && {
-        red "Profile $profile is not defined"
+    function usage() {
+        echo "Usage: firefox firejail_ns [options]"
+        echo ""
+        echo "  --firejail-opts=\"extra options for firejail\""
+        echo "  --firefox-opts=\"extra options for firefox\""
+        echo "  --private=firejail_private_folder"
+        echo "  --profile=firejail_profile"
         return 1
     }
 
-    local firejail_opts="--name=$firejail_name --profile=${firejail_profiles}/${profile}"
+    if [[ $# < 1 ]]; then
+        usage
+        return 1
+    fi
 
-    if [[ $priv_folder == none ]]; then
+    if [[ $1 =~ ^--help ]]; then
+        usage
+        return 1
+    fi
+    firejail_name=$1
+    shift
+
+    while [[ $# > 0 ]]; do
+        if [[ $1 =~ ^--firejail-opts=(.+)$ ]]; then
+            firejail_extra_opts="$match"
+            shift
+        elif [[ $1 =~ ^--firefox-opts=(.+)$ ]]; then
+            firefox_opts=$match
+            shift
+        elif [[ $1 =~ ^--profile=(.+)$ ]]; then
+            profile=$match
+            shift
+        elif [[ $1 =~ ^--private=(.+)$ ]]; then
+            priv_folder=$match
+            shift
+        else
+            usage
+            return 1
+        fi
+    done
+
+    local firejail_opts="--name=$firejail_name"
+
+    if [[ $profile != "" ]]; then
+        [[ ! -f $firejail_profiles/$profile ]] && {
+            red "Profile $profile is not defined"
+            return 1
+        }
+        firejail_opts="$firejail_opts --profile=${firejail_profiles}/${profile}"
+    fi
+
+    if [[ $priv_folder == "" ]]; then
         firejail_opts="$firejail_opts --private"
     else
         [[ ! -d $firejail_privates/$priv_folder ]] && {
@@ -100,5 +139,6 @@ function firefox() {
     fi
 
     # TODO: get rif of eval :/
+    echo "Running: firejail $firejail_opts /opt/firefox/firefox ${firefox_opts}"
     eval firejail $firejail_opts /opt/firefox/firefox ${firefox_opts}
 }

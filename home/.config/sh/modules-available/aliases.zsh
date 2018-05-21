@@ -8,9 +8,9 @@ alias m5s="md5sum $@"
 
 alias ls="ls --color=always"
 
-alias firefox-dev="firefox firefox.profile firefox-dev firefox-dev"
-alias firefox-mail="firefox firefox.profile firefox-email firefox-mail"
-alias firefox-priv="firefox firefox.profile none firefox-priv"
+alias firefox-dev="firefox firefox-dev --private=firefox-dev"
+alias firefox-mail="firefox firefox-email --private=firefox-email"
+alias firefox-priv="firefox firefox-priv"
 
 alias hless='f(){highlight -O truecolor $1 --force "${@:2}" | less}; f $@'
 alias hcat='f(){highlight -O truecolor $1 --force "${@:2}"}; f $@'
