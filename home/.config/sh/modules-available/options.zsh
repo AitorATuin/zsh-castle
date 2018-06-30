@@ -28,7 +28,8 @@ autoload cdg \
     lsp \
     tardir \
     bandcamp-dl \
-    watch-ss
+    watch-ss \
+    git-reset-author-all
 
 # Colors by name - based on https://github.com/Tarrasch/zsh-colors
 colors=(black red green yellow blue magenta cyan white)

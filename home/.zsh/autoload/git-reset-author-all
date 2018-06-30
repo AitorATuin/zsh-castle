@@ -1,0 +1,28 @@
+# Reset user/email for all commits in a repo
+# vi: ft=zsh
+# Credits: http://stackoverflow.com/a/750191
+
+function _git_reset() {
+    local user=$1
+    local email=$2
+    if [[ -z $user || -z $email ]]; then
+        echo "Usage: git-reset-author user email"
+        return 1
+    fi
+    echo "Warning: This will change the history of your repository!!!!!"
+    echo "It will author all commits to: $user <$email>"
+    echo "Do you really want to do it? (YES|n): "
+    while read answer;do
+        echo "Do you really want to do it? (YES|n): "
+        if [[ $answer == "YES" ]]; then break; fi
+        if [[ $answer == "n" ]]; then return 2; fi
+    done
+    echo git filter-branch -f --env-filter "
+        GIT_AUTHOR_NAME='$user'
+        GIT_AUTHOR_EMAIL='$email'
+        GIT_COMMITTER_NAME='$user'
+        GIT_COMMITTER_EMAIL='$email'
+      " HEAD
+}
+
+_git_reset $@
