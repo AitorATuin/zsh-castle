@@ -5,7 +5,8 @@ setopt appendhistory \
     extendedglob \
     nomatch \
     notify \
-    prompt_subst
+    prompt_subst \
+    hist_ignore_space
 
 unsetopt beep
 
