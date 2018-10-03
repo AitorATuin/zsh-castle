@@ -43,7 +43,9 @@ function _tardir () {
     }
     tmp_file=`tempfile`
     find $dir -regex $TARDIR_EXCLUDE > $tmp_file
-    tar $mode $tarball $dir -X $tmp_file
+    cat $tmp_file
+    tar $mode $tarball -X $tmp_file --owner=0 --group=0 $dir
+    gpg2 --sign --armor --output ${tarball}.asc $tarball
     rm -rf $tmp_file
 }
 
