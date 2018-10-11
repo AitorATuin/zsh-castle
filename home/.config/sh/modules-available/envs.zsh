@@ -35,7 +35,3 @@ export FZF_DEFAULT_OPTS='
 '
 
 export POWERLINE_CONFIG_COMMAND=~/.local/opt/powerline/scripts/powerline-config
-
-# nix, move to its own file
-export NIX_REMOTE=daemon
-source /etc/profile.d/nix.sh
