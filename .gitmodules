@@ -4,3 +4,6 @@
 [submodule "nix-zsh-completions"]
 	path = nix-zsh-completions
 	url = https://github.com/spwhitt/nix-zsh-completions.git
+[submodule "zsh-nix-shell"]
+	path = zsh-nix-shell
+	url = https://github.com/chisui/zsh-nix-shell.git
