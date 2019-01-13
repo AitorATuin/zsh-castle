@@ -139,6 +139,7 @@ function firefox() {
     fi
 
     # TODO: get rif of eval :/
-    echo "Running: firejail $firejail_opts /opt/firefox/firefox ${firefox_opts}"
-    eval firejail $firejail_opts /opt/firefox/firefox ${firefox_opts}
+    local firefox_bin=${FIREFOX_BIN:-/opt/firefox/firefox}
+    echo "Running: firejail $firejail_opts ${firefox_bin} ${firefox_opts}"
+    eval firejail $firejail_opts ${firefox_bin} ${firefox_opts}
 }
