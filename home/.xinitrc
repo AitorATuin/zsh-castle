@@ -34,7 +34,7 @@ autocutsel=$(which autocutsel)
 [ -z "$autocutsel" ] && [ -f $autocutsel ] && autocutsel &
 [ -z "$autocutsel" ] && [ -f $autocutsel ] && autocutsel -s PRIMARY &
 
-setxkbmap es
+setxkbmap es && setxkbmap -option ctrl:swapcaps && setxkbmap -option ctrl:nocaps
 
 case $WMANAGER in
     xmonad)
